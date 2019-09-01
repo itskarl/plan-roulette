@@ -12,7 +12,7 @@ function App() {
   return (
     <div className="app-container">
       <h1>
-        Meet In Between <i className="fas fa-street-view"></i>
+        Meet <i className="fas fa-street-view"></i>n Between
       </h1>
 
       <Formik
@@ -75,12 +75,14 @@ function App() {
 
                     } else {
                       setAddressErrors('Location Two not found. Please a enter more exact address')
+                      setSubmitting(false);
                       return;
                     }
 
                   });
               } else {
                 setAddressErrors('Location One not found. a Please enter more exact address')
+                setSubmitting(false);
                 return;
               }
 
