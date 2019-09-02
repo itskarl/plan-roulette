@@ -47,7 +47,6 @@ function App() {
                     `https://maps.googleapis.com/maps/api/geocode/json?address=${values.address2}&key=${process.env.REACT_APP_GEOCODE_KEY}`
                   )
                   .then(res2 => {
-
                     if (res2.data.results[0]) {
                       location2 = res2.data.results[0].geometry.location;
 
@@ -67,26 +66,26 @@ function App() {
                           if (yelpRes.data.businesses.length > 0) {
                             setLocationsFound(yelpRes.data.businesses);
                           } else {
-                            setNoLocationsFound(true)
+                            setNoLocationsFound(true);
                           }
 
                           setSubmitting(false);
                         });
-
                     } else {
-                      setAddressErrors('Location Two not found. Please a enter more exact address')
+                      setAddressErrors(
+                        "Location Two not found. Please a enter more exact address"
+                      );
                       setSubmitting(false);
                       return;
                     }
-
                   });
               } else {
-                setAddressErrors('Location One not found. a Please enter more exact address')
+                setAddressErrors(
+                  "Location One not found. a Please enter more exact address"
+                );
                 setSubmitting(false);
                 return;
               }
-
-
             });
         }}
       >
@@ -100,48 +99,87 @@ function App() {
           isSubmitting
           /* and other goodies */
         }) => (
-            <form className="address-fields" onSubmit={handleSubmit}>
-              <div className="meeting-type-list">
-                <button type="button" className={`${meetingType === 'dinner' ? 'active' : ''}`} onClick={() => setMeetingType('dinner')}><i className="fas fa-utensils"></i> Dinner </button>
-                <button type="button" className={`${meetingType === 'lunch' ? 'active' : ''}`} onClick={() => setMeetingType('lunch')}><i className="fas fa-utensils"></i> Lunch </button>
-                <button type="button" className={`${meetingType === 'date' ? 'active' : ''}`} onClick={() => setMeetingType('date')}><i className="fas fa-heart"></i> Date </button>
-                <button type="button" className={`${meetingType === 'coffee' ? 'active' : ''}`} onClick={() => setMeetingType('coffee')}><i className="fas fa-coffee"></i> Coffee </button>
-                <button type="button" className={`${meetingType === 'drinks' ? 'active' : ''}`} onClick={() => setMeetingType('drinks')}><i className="fas fa-cocktail"></i> Drinks </button>
-              </div>
-              <p className="address-errors">{addressErrors ? addressErrors : ''}</p>
-              <input
-                type="text"
-                name="address1"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.address1}
-                placeholder="Location 1"
-              />
-              <span className="errors">
-                {" "}
-                {errors.address1 && touched.address1 && errors.address1}
-              </span>
-
-              <input
-                type="text"
-                name="address2"
-                onChange={handleChange}
-                onBlur={handleBlur}
-                value={values.address2}
-                placeholder="Location 2"
-              />
-              <span className="errors">
-                {" "}
-                {errors.address2 && touched.address2 && errors.address2}
-              </span>
-              <button type="submit" disabled={isSubmitting}>
-                {isSubmitting ? "Searching..." : "Find the Perfect Inbetween!"}
+          <form className="address-fields" onSubmit={handleSubmit}>
+            <div className="meeting-type-list">
+              <button
+                type="button"
+                className={`${meetingType === "dinner" ? "active" : ""}`}
+                onClick={() => setMeetingType("dinner")}
+              >
+                <i className="fas fa-utensils"></i> Dinner{" "}
               </button>
-            </form>
-          )}
+              <button
+                type="button"
+                className={`${meetingType === "lunch" ? "active" : ""}`}
+                onClick={() => setMeetingType("lunch")}
+              >
+                <i className="fas fa-utensils"></i> Lunch{" "}
+              </button>
+              <button
+                type="button"
+                className={`${meetingType === "date" ? "active" : ""}`}
+                onClick={() => setMeetingType("date")}
+              >
+                <i className="fas fa-heart"></i> Date{" "}
+              </button>
+              <button
+                type="button"
+                className={`${meetingType === "coffee" ? "active" : ""}`}
+                onClick={() => setMeetingType("coffee")}
+              >
+                <i className="fas fa-coffee"></i> Coffee{" "}
+              </button>
+              <button
+                type="button"
+                className={`${meetingType === "drinks" ? "active" : ""}`}
+                onClick={() => setMeetingType("drinks")}
+              >
+                <i className="fas fa-cocktail"></i> Drinks{" "}
+              </button>
+            </div>
+            <p className="address-errors">
+              {addressErrors ? addressErrors : ""}
+            </p>
+            <input
+              type="text"
+              name="address1"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.address1}
+              placeholder="Location 1"
+            />
+            <span className="errors">
+              {" "}
+              {errors.address1 && touched.address1 && errors.address1}
+            </span>
+
+            <input
+              type="text"
+              name="address2"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.address2}
+              placeholder="Location 2"
+            />
+            <span className="errors">
+              {" "}
+              {errors.address2 && touched.address2 && errors.address2}
+            </span>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Searching..." : "Find the Perfect Inbetween!"}
+            </button>
+          </form>
+        )}
       </Formik>
       <div className="results-container">
-        {noLocationsFound && <><p>Sorry, no locations were found</p><h1><i className="far fa-sad-cry"></i> </h1></>}
+        {noLocationsFound && (
+          <>
+            <p>Sorry, no locations were found</p>
+            <h1>
+              <i className="far fa-sad-cry"></i>{" "}
+            </h1>
+          </>
+        )}
         {locationsFound.map((loc, key) => {
           return <LocationRow loc={loc} key={key} />;
         })}
@@ -157,31 +195,32 @@ const LocationRow = ({ loc }) => {
     <div className="each-location" onClick={() => setRowToggle(!rowToggled)}>
       <div className="app-row">
         <img src={loc.image_url} />
-        <div>
+        <div className="row-text">
           <p>
             {" "}
-            <b>{loc.name}</b>
-            <br />
-            {loc.location.display_address[0]}
+            <b>
+              {loc.name} {loc.is_closed && "(Currently Closed)"}{" "}
+            </b>
+            {loc.price && <span className="price-text">{loc.price.split('').map(() => <><i class="fas fa-dollar-sign"></i></>)}</span>}
           </p>
-          <p>
+          <p>{loc.location.display_address[0]}</p>
+          <div className="category-list">
             {loc.categories.map((category, ckey) => {
               return (
-                <span className="category-tag" key={ckey}>
-                  {" "}
+                <div className="category-tag" key={ckey}>
+              
                   {category.title}
-                </span>
+                </div>
               );
             })}
-          </p>
+          </div>
         </div>
       </div>
 
       {rowToggled && (
         <div>
           {loc.display_phone}
-          {loc.is_closed && "Currently Closed"}
-          {loc.price}
+
           {loc.rating}
           <a href={`${loc.url}`}>visit Yelp Page</a>
         </div>

@@ -23,7 +23,7 @@ code {
   min-height: 100vh;
   background: #C9D6FF;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to bottom, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
-  background: linear-gradient(.5turn, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  background: radial-gradient(white, #7eb6e2);
   font-family: 'Hepta Slab', serif;
   text-align: center;
 }
@@ -100,34 +100,49 @@ code {
 .app-row {
   display: flex;
   width: 100%;
-  align-items: center;
   margin: 1.25rem 0;
   text-align: left;
-  
+  border-radius: 8px;
+  overflow: hidden;
 
 }
+
+.row-text {
+  padding: .5rem 1rem;
+ }
 
 .app-row img{
   height: 6rem;
   width: 6rem;
-  border-radius: 8px;
+  border-radius: 8px 0 0;
   object-fit: cover
 } 
 
 .app-row p {
   margin: 0;
-  padding-left: 1rem;
-  line-height: 1.75rem
+  line-height: 1.5rem
 }
 
-
+.category-list {
+  display: flex;
+  flex-wrap: wrap
+}
 .category-tag {
   padding: .2rem .4rem;
-  margin: 0 .5rem 0 0;
+  margin: .25rem .5rem 0 0;
   background: #90a1c2;
   color: white;
-  border-radius: .5rem;
+  border-radius: .25rem;
   font-size: 14px;
+}
+
+span.price-text {
+  font-size: .75rem;
+  padding: .2rem .2rem .2rem .4rem;
+  background: #71cf7c;
+  color: white;
+  border-radius: .25rem;
+  letter-spacing: .2rem;
 }
 
 @media screen and (max-width: 465px) {
