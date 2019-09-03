@@ -9,6 +9,20 @@ function App() {
   const [addressErrors, setAddressErrors] = useState(undefined);
   const [noLocationsFound, setNoLocationsFound] = useState(false);
 
+  const colorsNTags = {
+    0: {tag: 'A', color: 'red'},
+    1: {tag: 'B', color: 'blue'},
+    2: {tag: 'C', color: 'green'},
+    3: {tag: 'D', color: 'yellow'},
+    4: {tag: 'E', color: 'purple'},
+    5: {tag: 'F', color: 'white'},
+    6: {tag: 'G', color: 'black'},
+    7: {tag: 'H', color: 'brown'},
+    8: {tag: 'I', color: 'silver'},
+    9: {tag: 'J', color: 'orange'}
+  }
+
+
   return (
     <div className="app-container">
       <h1>
@@ -64,7 +78,17 @@ function App() {
                         )
                         .then(yelpRes => {
                           if (yelpRes.data.businesses.length > 0) {
-                            setLocationsFound(yelpRes.data.businesses);
+                            const businessList = yelpRes.data.businesses;
+                            console.log(businessList)
+                            setLocationsFound(businessList);
+
+                            const businessLatLongs = businessList.slice(0,5).map((bus, key) => {return( `%20&markers=color:${colorsNTags[key].color}%7Clabel:${colorsNTags[key].tag}%7C${bus.coordinates.latitude},${bus.coordinates.longitude}`)}).join('')
+
+                           console.log( `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=320x300&maptype=roadmap${businessLatLongs}&key=AIzaSyBCexVXJ4GF6Wa1_fAK54YIjcNWlNKXvwA`)
+                            
+                            setNoLocationsFound(false);
+
+
                           } else {
                             setNoLocationsFound(true);
                           }
@@ -180,9 +204,9 @@ function App() {
             </h1>
           </>
         )}
-        {locationsFound.map((loc, key) => {
-          return <LocationRow loc={loc} key={key} />;
-        })}
+        {locationsFound.slice(0,5).map((loc, key) => 
+           <LocationRow loc={loc} key={key} />
+        )}
       </div>
     </div>
   );
@@ -194,35 +218,34 @@ const LocationRow = ({ loc }) => {
   return (
     <div className="each-location" onClick={() => setRowToggle(!rowToggled)}>
       <div className="app-row">
-        <img src={loc.image_url} />
+        <img src={loc.image_url} alt="restaurant" />
         <div className="row-text">
-          <p>
+          <div className="title-row">
             {" "}
             <b>
               {loc.name} {loc.is_closed && "(Currently Closed)"}{" "}
             </b>
-            {loc.price && <span className="price-text">{loc.price.split('').map(() => <><i class="fas fa-dollar-sign"></i></>)}</span>}
-          </p>
+            {loc.price && <div className="price-text">{loc.price.split('').map((a,z) => <React.Fragment key={z}><i className="fas fa-dollar-sign"></i></React.Fragment>)}</div>}
+          </div>
           <p>{loc.location.display_address[0]}</p>
           <div className="category-list">
-            {loc.categories.map((category, ckey) => {
-              return (
+            {loc.categories.map((category, ckey) => 
+              
                 <div className="category-tag" key={ckey}>
               
                   {category.title}
                 </div>
-              );
-            })}
+              
+            )}
           </div>
         </div>
       </div>
 
       {rowToggled && (
-        <div>
-          {loc.display_phone}
-
-          {loc.rating}
-          <a href={`${loc.url}`}>visit Yelp Page</a>
+        <div className="additional-info">
+          <p><b>Phone:</b>{loc.display_phone}</p>
+          <p><b>Reviews:</b> ({loc.rating}/5) <i class="fab fa-yelp"></i>{' '}<a href={`${loc.url}`} target="_blank" rel="noopener noreferrer" >visit Yelp Page</a></p>
+          <p><i class="fab fa-google"></i>{' '}<a href={`https://www.google.com/maps/search/${loc.name.replace(' ','+')}+${loc.location.display_address[0].replace(' ','+')}`} target="_blank" rel="noopener noreferrer">Find on Google</a> </p>
         </div>
       )}
     </div>
