@@ -25,9 +25,7 @@ function App() {
 
   return (
     <div className="app-container">
-      <h1>
-        Meet <i className="fas fa-street-view"></i>n Between
-      </h1>
+
 
       <Formik
         initialValues={{ address1: "", address2: "" }}
@@ -87,8 +85,7 @@ function App() {
                            console.log( `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=320x300&maptype=roadmap${businessLatLongs}&key=AIzaSyBCexVXJ4GF6Wa1_fAK54YIjcNWlNKXvwA`)
                             
                             setNoLocationsFound(false);
-
-
+                            
                           } else {
                             setNoLocationsFound(true);
                           }
@@ -124,6 +121,10 @@ function App() {
           /* and other goodies */
         }) => (
           <form className="address-fields" onSubmit={handleSubmit}>
+                  <h1>
+        Meet <i className="fas fa-street-view"></i>n Between
+      </h1>
+            <div className="banner"  />
             <div className="meeting-type-list">
               <button
                 type="button"
