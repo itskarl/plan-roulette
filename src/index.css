@@ -60,7 +60,11 @@ code {
   font-family: 'Hepta Slab', serif;
   cursor: pointer;
   letter-spacing: .1rem;
+  transition-duration: .3s
   
+}
+.address-fields button:hover {
+  background: #6293eb
 }
 
 .meeting-type-list {
@@ -74,6 +78,7 @@ code {
   padding: .5rem;
   height: auto;
   outline: none;
+  transition-duration: .3s
 }
 .meeting-type-list button:hover, .meeting-type-list .active {
   background: orange

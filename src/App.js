@@ -190,7 +190,7 @@ function App() {
               {errors.address2 && touched.address2 && errors.address2}
             </span>
             <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Searching..." : "Find the Perfect Inbetween!"}
+              {isSubmitting ? "Searching..." : "Find It!"}
             </button>
           </form>
         )}
