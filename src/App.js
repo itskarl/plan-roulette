@@ -8,6 +8,7 @@ function App() {
   const [meetingType, setMeetingType] = useState("dinner");
   const [addressErrors, setAddressErrors] = useState(undefined);
   const [noLocationsFound, setNoLocationsFound] = useState(false);
+  const [mapImage, setMapImage] = useState(undefined)
 
   const colorsNTags = {
     0: {tag: 'A', color: 'red'},
@@ -44,7 +45,6 @@ function App() {
           let location2;
           let new_lat;
           let new_long;
-          let radius = 2000;
 
           axios
             .get(
@@ -65,7 +65,9 @@ function App() {
                       new_lat = (location1.lat + location2.lat) / 2;
                       new_long = (location1.lng + location2.lng) / 2;
 
-                      axios
+
+                      const doYelpSearch = (radius) => {
+                        axios
                         .get(
                           `${"https://cors-anywhere.herokuapp.com/"}https://api.yelp.com/v3/businesses/search?term=${meetingType}&latitude=${new_lat}&longitude=${new_long}&limit=10&radius=${radius}`,
                           {
@@ -77,22 +79,35 @@ function App() {
                         .then(yelpRes => {
                           if (yelpRes.data.businesses.length > 0) {
                             const businessList = yelpRes.data.businesses;
-                            console.log(businessList)
                             setLocationsFound(businessList);
-
                             const businessLatLongs = businessList.slice(0,5).map((bus, key) => {return( `%20&markers=color:${colorsNTags[key].color}%7Clabel:${colorsNTags[key].tag}%7C${bus.coordinates.latitude},${bus.coordinates.longitude}`)}).join('')
-
-                           console.log( `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=320x300&maptype=roadmap${businessLatLongs}&key=AIzaSyBCexVXJ4GF6Wa1_fAK54YIjcNWlNKXvwA`)
-                            
+                            setMapImage( `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=800x600&maptype=roadmap${businessLatLongs}&key=${process.env.REACT_APP_GEOCODE_KEY}`)
                             setNoLocationsFound(false);
-                            
-                          } else {
+                          } else { 
                             setNoLocationsFound(true);
                           }
 
                           setSubmitting(false);
                         });
-                    } else {
+                      }
+
+                      // let count = 1000;
+       
+                      // var zoop = setInterval(function () {
+                      //   if ((count > 8000) || foundStuff) {
+                      //     clearInterval(zoop)
+                      //   }
+                      //   console.log('aaaa', count, locationsFound.length);
+                      //   doYelpSearch(count);
+                      //   count += 1500;
+                        
+
+                      // }, 2000)
+
+                      doYelpSearch(2000)
+
+                   
+                      } else {
                       setAddressErrors(
                         "Location Two not found. Please a enter more exact address"
                       );
@@ -197,6 +212,7 @@ function App() {
         )}
       </Formik>
       <div className="results-container">
+        {mapImage && <div className="map-container"><img src={mapImage} className="map-image" alt="google map" /></div>}
         {noLocationsFound && (
           <>
             <p>Sorry, no locations were found</p>
