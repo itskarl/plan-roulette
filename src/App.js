@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./App.css";
 import axios from "axios";
 import { Formik } from "formik";
+import ScrollContainer from 'react-indiana-drag-scroll'
 
 function App() {
   const [locationsFound, setLocationsFound] = useState([]);
@@ -26,8 +27,6 @@ function App() {
 
   return (
     <div className="app-container">
-
-
       <Formik
         initialValues={{ address1: "", address2: "" }}
         validate={values => {
@@ -65,34 +64,40 @@ function App() {
                       new_lat = (location1.lat + location2.lat) / 2;
                       new_long = (location1.lng + location2.lng) / 2;
 
-
-                      const doYelpSearch = (radius) => {
+                      const doYelpSearch = radius => {
                         axios
-                        .get(
-                          `${"https://cors-anywhere.herokuapp.com/"}https://api.yelp.com/v3/businesses/search?term=${meetingType}&latitude=${new_lat}&longitude=${new_long}&limit=10&radius=${radius}`,
-                          {
-                            headers: {
-                              Authorization: `Bearer ${process.env.REACT_APP_YELP_API}`
+                          .get(
+                            `${"https://cors-anywhere.herokuapp.com/"}https://api.yelp.com/v3/businesses/search?term=${meetingType}&latitude=${new_lat}&longitude=${new_long}&limit=10&radius=${radius}`,
+                            {
+                              headers: {
+                                Authorization: `Bearer ${process.env.REACT_APP_YELP_API}`
+                              }
                             }
-                          }
-                        )
-                        .then(yelpRes => {
-                          if (yelpRes.data.businesses.length > 0) {
-                            const businessList = yelpRes.data.businesses;
-                            setLocationsFound(businessList);
-                            const businessLatLongs = businessList.slice(0,5).map((bus, key) => {return( `%20&markers=color:${colorsNTags[key].color}%7Clabel:${colorsNTags[key].tag}%7C${bus.coordinates.latitude},${bus.coordinates.longitude}`)}).join('')
-                            setMapImage( `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=800x600&maptype=roadmap${businessLatLongs}&key=${process.env.REACT_APP_GEOCODE_KEY}`)
-                            setNoLocationsFound(false);
-                          } else { 
-                            setNoLocationsFound(true);
-                          }
+                          )
+                          .then(yelpRes => {
+                            if (yelpRes.data.businesses.length > 0) {
+                              const businessList = yelpRes.data.businesses;
+                              setLocationsFound(businessList);
+                              const businessLatLongs = businessList
+                                .slice(0, 5)
+                                .map((bus, key) => {
+                                  return `%20&markers=color:${colorsNTags[key].color}%7Clabel:${colorsNTags[key].tag}%7C${bus.coordinates.latitude},${bus.coordinates.longitude}`;
+                                })
+                                .join("");
+                              setMapImage(
+                                `https://maps.googleapis.com/maps/api/staticmap?center=${new_lat},${new_long}&zoom=14&size=800x800&maptype=roadmap${businessLatLongs}&key=${process.env.REACT_APP_GEOCODE_KEY}`
+                              );
+                              setNoLocationsFound(false);
+                            } else {
+                              setNoLocationsFound(true);
+                            }
 
-                          setSubmitting(false);
-                        });
-                      }
+                            setSubmitting(false);
+                          });
+                      };
 
                       // let count = 1000;
-       
+
                       // var zoop = setInterval(function () {
                       //   if ((count > 8000) || foundStuff) {
                       //     clearInterval(zoop)
@@ -100,14 +105,11 @@ function App() {
                       //   console.log('aaaa', count, locationsFound.length);
                       //   doYelpSearch(count);
                       //   count += 1500;
-                        
 
                       // }, 2000)
 
-                      doYelpSearch(2000)
-
-                   
-                      } else {
+                      doYelpSearch(2000);
+                    } else {
                       setAddressErrors(
                         "Location Two not found. Please a enter more exact address"
                       );
@@ -136,10 +138,10 @@ function App() {
           /* and other goodies */
         }) => (
           <form className="address-fields" onSubmit={handleSubmit}>
-                  <h1>
-        Meet <i className="fas fa-street-view"></i>n Between
-      </h1>
-            <div className="banner"  />
+            <h1>
+              Meet <i className="fas fa-street-view"></i>n Between
+            </h1>
+            <div className="banner" />
             <div className="meeting-type-list">
               <button
                 type="button"
@@ -212,7 +214,13 @@ function App() {
         )}
       </Formik>
       <div className="results-container">
-        {mapImage && <div className="map-container"><img src={mapImage} className="map-image" alt="google map" /></div>}
+        {mapImage && (
+          <ScrollContainer className="scroll-container map-container">
+
+            <img src={mapImage} className="map-image" alt="google map" />
+  
+          </ScrollContainer>
+        )}
         {noLocationsFound && (
           <>
             <p>Sorry, no locations were found</p>
@@ -221,9 +229,9 @@ function App() {
             </h1>
           </>
         )}
-        {locationsFound.slice(0,5).map((loc, key) => 
-           <LocationRow loc={loc} key={key} />
-        )}
+        {locationsFound.slice(0, 5).map((loc, key) => (
+          <LocationRow loc={loc} key={key} />
+        ))}
       </div>
     </div>
   );
