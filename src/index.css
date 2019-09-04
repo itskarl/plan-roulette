@@ -20,7 +20,7 @@ code {
   justify-content: center;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(90deg, #3b5990 49%, #464f61 49%);
+  background: linear-gradient(90deg, #3b5990 50%, #464f61 50%);
   font-family: "Hepta Slab", serif;
   text-align: center;
 }
