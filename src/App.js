@@ -4,26 +4,25 @@ import axios from "axios";
 import { Formik } from "formik";
 import ScrollContainer from 'react-indiana-drag-scroll'
 
+const colorsNTags = {
+  0: {tag: 'A', color: 'red'},
+  1: {tag: 'B', color: 'blue'},
+  2: {tag: 'C', color: 'green'},
+  3: {tag: 'D', color: 'yellow'},
+  4: {tag: 'E', color: 'purple'},
+  5: {tag: 'F', color: 'white'},
+  6: {tag: 'G', color: 'black'},
+  7: {tag: 'H', color: 'brown'},
+  8: {tag: 'I', color: 'silver'},
+  9: {tag: 'J', color: 'orange'}
+}
+
 function App() {
   const [locationsFound, setLocationsFound] = useState([]);
   const [meetingType, setMeetingType] = useState("dinner");
   const [addressErrors, setAddressErrors] = useState(undefined);
   const [noLocationsFound, setNoLocationsFound] = useState(false);
   const [mapImage, setMapImage] = useState(undefined)
-
-  const colorsNTags = {
-    0: {tag: 'A', color: 'red'},
-    1: {tag: 'B', color: 'blue'},
-    2: {tag: 'C', color: 'green'},
-    3: {tag: 'D', color: 'yellow'},
-    4: {tag: 'E', color: 'purple'},
-    5: {tag: 'F', color: 'white'},
-    6: {tag: 'G', color: 'black'},
-    7: {tag: 'H', color: 'brown'},
-    8: {tag: 'I', color: 'silver'},
-    9: {tag: 'J', color: 'orange'}
-  }
-
 
   return (
     <div className="app-container">
@@ -230,16 +229,16 @@ function App() {
           </>
         )}
         {locationsFound.slice(0, 5).map((loc, key) => (
-          <LocationRow loc={loc} key={key} />
+          <LocationRow loc={loc} key={key} num={key}/>
         ))}
       </div>
     </div>
   );
 }
 
-const LocationRow = ({ loc }) => {
+const LocationRow = ({ loc, num }) => {
   const [rowToggled, setRowToggle] = useState(false);
-
+  
   return (
     <div className="each-location" onClick={() => setRowToggle(!rowToggled)}>
       <div className="app-row">
@@ -264,11 +263,12 @@ const LocationRow = ({ loc }) => {
             )}
           </div>
         </div>
+        <div className="key-color" style={{backgroundColor: colorsNTags[num].color}}>{colorsNTags[num].tag}</div>
       </div>
 
       {rowToggled && (
         <div className="additional-info">
-          <p><b>Phone:</b>{loc.display_phone}</p>
+          <p><b>Phone:{' '}</b>{loc.display_phone}</p>
           <p><b>Reviews:</b> ({loc.rating}/5) <i class="fab fa-yelp"></i>{' '}<a href={`${loc.url}`} target="_blank" rel="noopener noreferrer" >visit Yelp Page</a></p>
           <p><i class="fab fa-google"></i>{' '}<a href={`https://www.google.com/maps/search/${loc.name.replace(' ','+')}+${loc.location.display_address[0].replace(' ','+')}`} target="_blank" rel="noopener noreferrer">Find on Google</a> </p>
         </div>
