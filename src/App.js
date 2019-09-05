@@ -5,16 +5,16 @@ import { Formik } from "formik";
 import ScrollContainer from 'react-indiana-drag-scroll'
 
 const colorsNTags = {
-  0: {tag: 'A', color: 'red'},
-  1: {tag: 'B', color: 'blue'},
-  2: {tag: 'C', color: 'green'},
-  3: {tag: 'D', color: 'yellow'},
-  4: {tag: 'E', color: 'purple'},
-  5: {tag: 'F', color: 'white'},
-  6: {tag: 'G', color: 'black'},
-  7: {tag: 'H', color: 'brown'},
-  8: {tag: 'I', color: 'silver'},
-  9: {tag: 'J', color: 'orange'}
+  0: {tag: 'A', color: 'red', hex: '#ea4335'},
+  1: {tag: 'B', color: 'blue', hex: '#7eacfe'},
+  2: {tag: 'C', color: 'green', hex: '#8aaf00'},
+  3: {tag: 'D', color: 'yellow', hex: '#e6b32f'},
+  4: {tag: 'E', color: 'purple', hex: '#926ea6'},
+  5: {tag: 'F', color: 'white', hex: ''},
+  6: {tag: 'G', color: 'black', hex: ''},
+  7: {tag: 'H', color: 'brown', hex: ''},
+  8: {tag: 'I', color: 'silver', hex: ''},
+  9: {tag: 'J', color: 'orange', hex: ''}
 }
 
 function App() {
@@ -246,9 +246,9 @@ const LocationRow = ({ loc, num }) => {
         <div className="row-text">
           <div className="title-row">
             {" "}
-            <b>
+            <p><b>
               {loc.name} {loc.is_closed && "(Currently Closed)"}{" "}
-            </b>
+            </b></p>
             {loc.price && <div className="price-text">{loc.price.split('').map((a,z) => <React.Fragment key={z}><i className="fas fa-dollar-sign"></i></React.Fragment>)}</div>}
           </div>
           <p>{loc.location.display_address[0]}</p>
@@ -263,7 +263,7 @@ const LocationRow = ({ loc, num }) => {
             )}
           </div>
         </div>
-        <div className="key-color" style={{backgroundColor: colorsNTags[num].color}}>{colorsNTags[num].tag}</div>
+        <div className="key-color" style={{backgroundColor: colorsNTags[num].hex}}>{colorsNTags[num].tag}</div>
       </div>
 
       {rowToggled && (

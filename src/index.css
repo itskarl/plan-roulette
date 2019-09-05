@@ -33,7 +33,7 @@ code {
 }
 .banner {
   background: url("/banner.png") no-repeat center center / contain;
-  min-height: 15vh;
+  min-height: 22vh;
   width: 100%;
 }
 
@@ -119,8 +119,9 @@ code {
   padding: 0.5rem 1rem;
 }
 
-.title-row {
-  height: 24px;
+
+.title-row p {
+  display: inline
 }
 
 .app-row img {
@@ -173,7 +174,6 @@ code {
 }
 
 .additional-info {
-  background: linear-gradient(#00000000, #ffffff);
   border-radius: 0 0 0.5rem 0.5rem;
   padding: 0.5rem 1rem;
   line-height: 1.25;
@@ -183,7 +183,7 @@ code {
   animation: slide-bottom 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
   border: 1px solid #628098;
     border-top: 0px;
-    background: e0e0ef;
+    background: #e0e0ef;
     margin-top: -.5rem;
     
 }
@@ -210,11 +210,18 @@ code {
   .app-container h1 {
     font-size: 2.3rem;
   }
+  .banner {
+    min-height: 20vh
+  }
+
 }
 
 @media screen and (max-width: 400px) {
   .app-container h1 {
     font-size: 1.7rem;
+  }
+  .banner {
+    min-height: 15vh
   }
 }
 
@@ -245,9 +252,11 @@ code {
   0% {
     -webkit-transform: translateY(-100px);
     transform: translateY(-100px);
+    opacity: 0;
   }
   100% {
     -webkit-transform: translateY(0px);
     transform: translateY(0px);
+    opacity: 1;
   }
 }
