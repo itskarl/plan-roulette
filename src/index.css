@@ -92,14 +92,19 @@ code {
 }
 
 .errors {
-  color: red;
+  color: #ffffff;
+  padding: 5px;
+  background: #ff000061;
+  border-radius: 5px;
   font-size: 0.75rem;
   padding: 0 0.75rem;
 }
 
 .address-errors {
-  color: red;
-  font-weight: bold;
+  color: #ffffff;
+  padding: 5px;
+  background: #ff000061;
+  border-radius: 5px;
 }
 
 .app-row {

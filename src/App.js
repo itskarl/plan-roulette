@@ -44,6 +44,11 @@ function App() {
           let new_lat;
           let new_long;
 
+          setNoLocationsFound(false);
+          setAddressErrors(false);
+          setMapImage(undefined)
+          setLocationsFound([])
+
           axios
             .get(
               `https://maps.googleapis.com/maps/api/geocode/json?address=${values.address1}&key=${process.env.REACT_APP_GEOCODE_KEY}`
@@ -178,9 +183,11 @@ function App() {
                 <i className="fas fa-cocktail"></i> Drinks{" "}
               </button>
             </div>
+            {addressErrors ?
             <p className="address-errors">
-              {addressErrors ? addressErrors : ""}
+               {addressErrors }
             </p>
+            : ""}
             <input
               type="text"
               name="address1"
@@ -232,6 +239,18 @@ function App() {
           <LocationRow loc={loc} key={key} num={key}/>
         ))}
       </div>
+
+      
+      <style>{`
+
+          @media screen and (min-width: 1260px) {
+          .app-container {
+            display: ${locationsFound.length > 0 ? 'grid;' : ';'}
+            grid-template-columns: 50vw 50vw;
+          }
+          }
+          `}
+      </style>
     </div>
   );
 }
